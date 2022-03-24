@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <aop:config proxy-target-class="true">
+        <aop:aspect id="traceInvocationAspect" ref="tracerInvocation">
+            <aop:pointcut id="traceInvocationPointcut"
+                          expression="execution(* ma.aop.service.ServiceModel.*())" />
+            <aop:around pointcut-ref="traceInvocationPointcut" method="afficherTrace"/>
+        </aop:aspect>
+    </aop:config>
+    <bean id="tracerInvocation" class="ma.aop.aspect.TraceInvocation"/>
+    <bean id="serviceModel" class="ma.aop.service.ServiceModel" />
+</beans>
